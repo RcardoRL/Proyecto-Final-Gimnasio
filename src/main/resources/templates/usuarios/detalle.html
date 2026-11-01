@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalle del Usuario</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f6fa;
+            padding: 40px;
+        }
+
+        .contenedor {
+            max-width: 550px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #263238;
+        }
+
+        .dato {
+            margin: 15px 0;
+        }
+
+        .dato strong {
+            color: #34495e;
+        }
+
+        .boton {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 15px;
+            background-color: #2980b9;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .boton:hover {
+            background-color: #1f618d;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="contenedor">
+
+        <h1>Detalle del Usuario</h1>
+
+        <div class="dato">
+            <strong>ID:</strong>
+            <span th:text="${usuario.id}"></span>
+        </div>
+
+        <div class="dato">
+            <strong>Nombre:</strong>
+            <span th:text="${usuario.nombre}"></span>
+        </div>
+
+        <div class="dato">
+            <strong>Usuario:</strong>
+            <span th:text="${usuario.username}"></span>
+        </div>
+
+        <div class="dato">
+            <strong>Correo:</strong>
+            <span th:text="${usuario.email}"></span>
+        </div>
+
+        <div class="dato">
+            <strong>Teléfono:</strong>
+            <span th:text="${usuario.telefono}"></span>
+        </div>
+
+        <div class="dato">
+            <strong>Rol:</strong>
+            <span th:text="${usuario.rol}"></span>
+        </div>
+
+        <div class="dato">
+            <strong>Estado:</strong>
+            <span th:text="${usuario.activo ? 'Activo' : 'Inactivo'}"></span>
+        </div>
+
+        <!-- Solo los administradores pueden volver a la lista -->
+        <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+        th:href="@{/usuarios}"
+        class="boton">
+            Volver a usuarios
+        </a>
+
+        <!-- Los usuarios normales pueden regresar a su perfil -->
+        <a th:if="${#authorization.expression('hasRole(''USER'')')}"
+        th:href="@{/usuarios/mi-perfil}"
+        class="boton">
+            Mi perfil
+        </a>
+
+    </div>
+
+</body>
+</html>

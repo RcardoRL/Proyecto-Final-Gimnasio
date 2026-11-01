@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Formulario de Usuario</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f6fa;
+            margin: 40px;
+        }
+
+        .contenedor {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, select {
+            padding: 9px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        input:not([type="checkbox"]), select {
+            width: 100%;
+        }
+
+        .error {
+            color: #c62828;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .checkbox label {
+            margin: 0;
+        }
+
+        button {
+            background-color: #34495e;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <h1 th:text="${usuario.id == null} ? 'Nuevo usuario' : 'Editar usuario'">
+    Formulario de Usuario
+    </h1>
+
+    
+    <form th:action="${usuario.id == null} ? @{/usuarios/guardar} : @{/usuarios/actualizar/{id}(id=${usuario.id})}"
+        th:object="${usuario}"
+        method="post">
+
+
+        <div th:if="${error}" class="error"
+             th:text="${error}"></div>
+
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}">
+        <div class="error"
+             th:if="${#fields.hasErrors('nombre')}"
+             th:errors="*{nombre}"></div>
+
+        <label>Usuario:</label>
+        <input type="text" th:field="*{username}">
+        <div class="error"
+             th:if="${#fields.hasErrors('username')}"
+             th:errors="*{username}"></div>
+
+        <label>Correo electrónico:</label>
+        <input type="email" th:field="*{email}">
+        <div class="error"
+             th:if="${#fields.hasErrors('email')}"
+             th:errors="*{email}"></div>
+
+        <label>Cédula:</label>
+        <input type="text"
+            th:field="*{cedula}" 
+            maxlength="9"
+            minlength="9"
+            pattern="[0-9]{9}"
+            inputmode="numeric"
+            placeholder="Ejemplo: 101230456"
+            required>
+
+        <div class="error"
+            th:if="${#fields.hasErrors('cedula')}"
+            th:errors="*{cedula}"></div>
+
+
+        <label>Contraseña:</label>
+        <input type="password"
+                name="password"
+                id="password"
+                value=""
+                autocomplete="new-password"
+                th:placeholder="${usuario.id == null} ? 'Ingrese una contraseña' : 'Dejar vacío para conservar la contraseña'">
+
+        <label>Teléfono:</label>
+        <input type="text" th:field="*{telefono}"
+               maxlength="8"
+               placeholder="Ejemplo: 88881234">
+        <div class="error"
+             th:if="${#fields.hasErrors('telefono')}"
+             th:errors="*{telefono}"></div>
+
+        
+        <label>Rol:</label>
+        <select th:field="*{rol}"> <!-- conecta el selector con el campo rol de Usuario.java -->
+            <option value="ADMIN">Administrador</option>
+            <option value="ENTRENADOR">Entrenador</option>
+            <option value="CLIENTE">Cliente</option>
+        </select>
+
+
+        <div class="checkbox">
+            <input type="checkbox" th:field="*{activo}">
+            <label>Usuario activo</label>
+        </div>
+
+        <button type="submit"
+            th:text="${usuario.id == null} ? 'Guardar usuario' : 'Actualizar usuario'">
+            Guardar usuario
+        </button>
+
+    </form>
+
+    <p>
+        <a th:href="@{/usuarios}">Volver a la lista</a>
+    </p>
+
+</div>
+
+</body>
+</html>

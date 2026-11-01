@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestión de Usuarios</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f6fa;
+        }
+
+        h1 {
+            color: #263238;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        .activo {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 6px 10px;
+            border-radius: 6px;
+        }
+
+        .inactivo {
+            background-color: #e2e3e5;
+            color: #555;
+            padding: 6px 10px;
+            border-radius: 6px;
+        }
+
+        .btn-editar {
+            background-color: #2980b9;
+            color: white;
+            padding: 7px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        
+        /* Estilo del botón Eliminar */
+        .btn-eliminar {
+            background-color: #dc3545;
+            color: white;
+            padding: 7px 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-eliminar:hover {
+            background-color: #b02a37;
+        }
+
+
+
+        .buscador {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .buscador input {
+            padding: 11px;
+            width: 300px;
+            max-width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .buscador button, .btn-limpiar {
+            padding: 11px 18px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .buscador button:hover {
+            background-color: #1f618d;
+        }
+
+        .btn-limpiar:hover {
+            background-color: #545b62;
+        }
+
+
+        /* Botón para consultar los detalles */
+        .btn-detalle {
+            display: inline-block;
+            background-color: #198754;
+            color: white;
+            padding: 7px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+
+        .btn-detalle:hover {
+            background-color: #146c43;
+        }
+
+
+    </style>
+</head>
+
+
+<body>
+
+    <h1>Gestión de Usuarios</h1>
+
+    <!-- Mensaje de éxito -->
+    <div th:if="${mensaje}"
+         style="color: green; margin: 15px 0;">
+        <p th:text="${mensaje}"></p>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div th:if="${error}"
+         style="color: red; margin: 15px 0;">
+        <p th:text="${error}"></p>
+    </div>
+
+    <!-- Buscador de usuarios -->
+    <form th:action="@{/usuarios}" method="get" class="buscador">
+
+
+            <input type="text"
+                name="q"
+                th:value="${q}"
+                placeholder="Buscar por nombre o usuario">
+
+            <button type="submit">
+                Buscar
+            </button>
+
+            <a th:href="@{/usuarios}" class="btn-limpiar">
+                Limpiar
+            </a>
+
+        </form>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Usuario</th>
+                <th>Correo</th>
+                <th>Cédula</th>
+                <th>Teléfono</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="usuario : ${usuarios}">
+                <td th:text="${usuario.id}"></td>
+                <td th:text="${usuario.nombre}"></td>
+                <td th:text="${usuario.username}"></td>
+                <td th:text="${usuario.email}"></td>
+                <td th:text="${usuario.cedula}"></td>
+                <td th:text="${usuario.telefono}"></td>
+                <td th:text="${usuario.rol}"></td>
+
+                <td>
+                    <span th:if="${usuario.activo}"
+                          class="activo">Activo</span>
+
+                    <span th:unless="${usuario.activo}"
+                          class="inactivo">Inactivo</span>
+                </td>
+
+                <td>
+
+                    <!-- Enlace para consultar los detalles del usuario -->
+                    <a th:href="@{/usuarios/{id}(id=${usuario.id})}"
+                    class="btn-detalle">
+                        Ver detalles
+                    </a>
+
+                    <a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}"
+                        class="btn-editar">
+                        Editar
+                    </a>
+                            <!-- Formulario para eliminar el usuario -->
+                    <form th:action="@{/usuarios/eliminar/{id}(id=${usuario.id})}"
+                        method="post"
+                        style="display:inline;">
+
+                        
+                        <button type="submit"
+                                class="btn-eliminar"
+                                onclick="return confirm('¿Seguro que deseas eliminar este usuario?')">
+                            Eliminar
+                        </button>
+
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(usuarios)}">
+                <td colspan="8">No hay usuarios</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
