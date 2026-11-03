@@ -24,6 +24,9 @@ public interface UsuarioRepository extends JpaRepository <Usuario, Long>{
     boolean existsByCedulaAndIdNot(String cedula, Long id);
 
 
+    Optional<Usuario> findByEmail(String email);
+
+
     List<Usuario> findByNombreContainingIgnoreCaseOrUsernameContainingIgnoreCase(
             String nombre,
             String username

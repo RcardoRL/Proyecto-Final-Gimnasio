@@ -127,6 +127,40 @@
         }
 
 
+        /* Botones de acciones del mismo tamaño */
+        .btn-detalle,
+        .btn-editar,
+        .btn-eliminar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 95px;
+            height: 30px;
+            padding: 0 5px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 5px;
+            box-sizing: border-box;
+            text-decoration: none;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .btn-volver {
+            display: inline-block;
+            background-color: #64748b;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .btn-volver:hover {
+            background-color: #475569;
+        }
+
     </style>
 </head>
 
@@ -134,6 +168,10 @@
 <body>
 
     <h1>Gestión de Usuarios</h1>
+
+    <a th:href="@{/login}" class="btn-volver">
+    Volver al inicio
+    </a>
 
     <!-- Mensaje de éxito -->
     <div th:if="${mensaje}"
@@ -212,20 +250,6 @@
                         class="btn-editar">
                         Editar
                     </a>
-                            <!-- Formulario para eliminar el usuario -->
-                    <form th:action="@{/usuarios/eliminar/{id}(id=${usuario.id})}"
-                        method="post"
-                        style="display:inline;">
-
-                        
-                        <button type="submit"
-                                class="btn-eliminar"
-                                onclick="return confirm('¿Seguro que deseas eliminar este usuario?')">
-                            Eliminar
-                        </button>
-
-
-                    </form>
 
                 </td>
 

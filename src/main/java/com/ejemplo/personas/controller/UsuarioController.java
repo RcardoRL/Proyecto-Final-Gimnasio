@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -127,31 +128,7 @@ public String actualizar(
 }
 
 
-@PostMapping("/usuarios/eliminar/{id}")
-public String eliminarUsuario(
-        @PathVariable Long id,
-        Authentication authentication,
-        RedirectAttributes redirectAttributes) {
-
-    try {
-        // Obtener el usuario que inició sesión
-        String usernameActual = authentication.getName();
-
-        // Intentar eliminar el usuario
-        usuarioService.eliminar(id, usernameActual);
-
-        redirectAttributes.addFlashAttribute(
-                "mensaje", "Usuario eliminado correctamente");
-
-    } catch (IllegalArgumentException e) {
-        redirectAttributes.addFlashAttribute(
-                "error", e.getMessage());
-    }
-
-    return "redirect:/usuarios";
-}
-
-
+@PreAuthorize("hasRole('ADMIN')")
 @GetMapping("/usuarios/{id}")
 public String verDetalleUsuario(
         @PathVariable Long id,
@@ -192,6 +169,65 @@ public String verMiPerfil(
 
     return "usuarios/detalle";
 }
+
+
+    // Mostrar formulario para editar el perfil propio
+    @GetMapping("/usuarios/mi-perfil/editar")
+    public String editarMiPerfil(
+            Authentication authentication,
+            Model model) {
+
+        // Obtener el usuario que inició sesión
+        String username = authentication.getName();
+
+        // Buscar sus datos en la base de datos
+        Usuario usuario = usuarioService.buscarPorUsername(username);
+
+        // Enviar el usuario al formulario
+        model.addAttribute("usuario", usuario);
+
+        return "usuarios/editar-perfil";
+    }
+
+
+    // Guardar los cambios del perfil del usuario autenticado
+    @PostMapping("/usuarios/mi-perfil/actualizar")
+    public String actualizarMiPerfil(
+            Authentication authentication,
+            @RequestParam String nombre,
+            @RequestParam String email,
+            @RequestParam String cedula,
+            @RequestParam String telefono,
+            @RequestParam(required = false) String nuevaPassword,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            usuarioService.actualizarMiPerfil(
+                    authentication.getName(),
+                    nombre,
+                    email,
+                    cedula,
+                    telefono,
+                    nuevaPassword
+            );
+
+            redirectAttributes.addFlashAttribute(
+                    "mensaje",
+                    "¡Perfil actualizado correctamente!"
+            );
+
+            return "redirect:/usuarios/mi-perfil";
+
+        } catch (IllegalArgumentException e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    e.getMessage()
+            );
+
+            return "redirect:/usuarios/mi-perfil/editar";
+        }
+    }
 
 
 }

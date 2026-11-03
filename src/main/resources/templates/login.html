@@ -136,9 +136,27 @@
             Sistema de Gestión de Usuarios
         </p>
 
+       
+        <p th:if="${param.registroExitoso}"
+        style="color: green; text-align: center; font-weight: bold;">
+            ¡Registro exitoso! Ya puedes iniciar sesión.
+        </p>
+
+        <p th:if="${param.passwordRestablecida}"
+        style="color: green; text-align: center; font-weight: bold;">
+            ¡Contraseña actualizada correctamente!
+            Ya puedes iniciar sesión.
+        </p>
+
         <div th:if="${param.error}" class="mensaje error">
             Usuario o contraseña incorrectos.
         </div>
+
+
+        <div th:if="${param.desactivado}" class="mensaje error">
+            Tu cuenta está desactivada. Contacta al administrador.
+        </div>
+
 
         <div th:if="${param.logout}" class="mensaje exito">
             Has cerrado sesión correctamente.
@@ -168,6 +186,22 @@
 
         </form>
 
+        <div style="text-align: center; margin-top: 18px;">
+            <a th:href="@{/recuperar-password}"
+            style="color: #2980b9;
+                    text-decoration: none;
+                    font-size: 13px;">
+                ¿Olvidaste tu contraseña?
+            </a>
+        </div>
+
+        <p style="text-align: center; margin-top: 15px;">
+        ¿No tienes una cuenta?
+            <a th:href="@{/registro}"
+                style="color: #2980b9; font-weight: bold; text-decoration: none;">
+                 Regístrate aquí
+            </a>
+        </p>
 
     </div>
 

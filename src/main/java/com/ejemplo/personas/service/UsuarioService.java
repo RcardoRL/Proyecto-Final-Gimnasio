@@ -78,6 +78,25 @@ public class UsuarioService {
 
     }
 
+
+    // REGISTRO DE CLIENTES
+    @Transactional
+    public Usuario registrarCliente(Usuario usuario) {
+
+        // Asignar siempre el rol CLIENTE
+        usuario.setRol("CLIENTE");
+
+        // Activar la cuenta automáticamente
+        usuario.setActivo(true);
+
+        // Evitar que se reutilice un ID enviado desde el formulario
+        usuario.setId(null);
+
+        // Reutilizar las validaciones y el cifrado BCrypt
+        return crear(usuario);
+    }
+
+
     //ACTUALIZAR USUARIOS 
     @Transactional 
     public Usuario actualizar(Long id, Usuario datos){
@@ -111,26 +130,6 @@ public class UsuarioService {
 
     }
 
-    //ELIMINAR 
-    @Transactional
-    public void eliminar(Long id, String usernameActual) {
-
-        // Buscar el usuario que se desea eliminar
-        Usuario usuario = repo.findById(id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Usuario no encontrado"));
-
-        // Evitar que el administrador elimine su propia cuenta
-        if (usuario.getUsername().equals(usernameActual)) {
-            throw new IllegalArgumentException(
-                    "No puedes eliminar tu propia cuenta");
-        }
-
-        // Eliminar el usuario
-        repo.delete(usuario);
-    }
-
-
     public Usuario buscarPorUsername(String username) {
 
         // Buscar al usuario por su nombre de usuario
@@ -139,6 +138,55 @@ public class UsuarioService {
                     new IllegalArgumentException("Usuario no encontrado"));
     }
 
+
+    @Transactional
+    public void actualizarMiPerfil(
+            String usernameActual,
+            String nombre,
+            String email,
+            String cedula,
+            String telefono,
+            String nuevaPassword) {
+
+        Usuario usuario = repo.findByUsername(usernameActual)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Usuario no encontrado"));
+
+        // Validar campos obligatorios
+        if (nombre == null || nombre.isBlank()
+                || email == null || email.isBlank()
+                || cedula == null || !cedula.matches("\\d{9}")
+                || telefono == null || !telefono.matches("\\d{8}")) {
+            throw new IllegalArgumentException(
+                    "Verifica los datos del formulario");
+        }
+
+        if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+            throw new IllegalArgumentException("Correo electrónico inválido");
+        }
+
+        // Evitar correos y cédulas duplicadas
+        if (repo.existsByEmailAndIdNot(email, usuario.getId())) {
+            throw new IllegalArgumentException("El correo ya está registrado");
+        }
+
+        if (repo.existsByCedulaAndIdNot(cedula, usuario.getId())) {
+            throw new IllegalArgumentException("La cédula ya está registrada");
+        }
+
+        // Actualizar únicamente los campos permitidos
+        usuario.setNombre(nombre);
+        usuario.setEmail(email);
+        usuario.setCedula(cedula);
+        usuario.setTelefono(telefono);
+
+        // Cambiar contraseña solo cuando se indique una nueva
+        if (nuevaPassword != null && !nuevaPassword.isBlank()) {
+            usuario.setPassword(passwordEncoder.encode(nuevaPassword));
+        }
+
+        repo.save(usuario);
+    }
 
 
 }

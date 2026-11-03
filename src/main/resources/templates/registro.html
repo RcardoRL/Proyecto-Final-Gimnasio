@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registro de Clientes</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f6fa;
+            margin: 40px;
+        }
+
+        .contenedor {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 9px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        .error {
+            color: #c62828;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        button {
+            background-color: #2980b9;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+<div class="contenedor">
+
+    <h1>Registro de Clientes</h1>
+
+    <form th:action="@{/registro}"
+          th:object="${usuario}"
+          method="post">
+
+        <!-- Error general -->
+        <div th:if="${error}"
+             class="error"
+             th:text="${error}"></div>
+
+        <!-- Nombre -->
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}" required>
+        <div class="error"
+             th:if="${#fields.hasErrors('nombre')}"
+             th:errors="*{nombre}"></div>
+
+        <!-- Usuario -->
+        <label>Usuario:</label>
+        <input type="text" th:field="*{username}" required>
+        <div class="error"
+             th:if="${#fields.hasErrors('username')}"
+             th:errors="*{username}"></div>
+
+        <!-- Correo -->
+        <label>Correo electrónico:</label>
+        <input type="email" th:field="*{email}" required>
+        <div class="error"
+             th:if="${#fields.hasErrors('email')}"
+             th:errors="*{email}"></div>
+
+        <!-- Cédula -->
+        <label>Cédula:</label>
+        <input type="text"
+               th:field="*{cedula}"
+               maxlength="9"
+               pattern="[0-9]{9}"
+               inputmode="numeric"
+               required>
+        <div class="error"
+             th:if="${#fields.hasErrors('cedula')}"
+             th:errors="*{cedula}"></div>
+
+        <!-- Teléfono -->
+        <label>Teléfono:</label>
+        <input type="text"
+               th:field="*{telefono}"
+               maxlength="8"
+               pattern="[0-9]{8}"
+               required>
+        <div class="error"
+             th:if="${#fields.hasErrors('telefono')}"
+             th:errors="*{telefono}"></div>
+
+        <!-- Contraseña -->
+        <label>Contraseña:</label>
+        <input type="password"
+               name="password"
+               id="password"
+               autocomplete="new-password"
+               required>
+
+        <button type="submit">Registrarme</button>
+
+    </form>
+
+    <p>
+        ¿Ya tienes una cuenta?
+        <a th:href="@{/login}">Iniciar sesión</a>
+    </p>
+
+</div>
+</body>
+</html>

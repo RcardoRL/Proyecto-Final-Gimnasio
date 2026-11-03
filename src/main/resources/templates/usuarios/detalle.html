@@ -47,6 +47,37 @@
         .boton:hover {
             background-color: #1f618d;
         }
+
+                /* Alinear los botones de acciones */
+        .acciones {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .acciones .boton,
+        .acciones button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+            padding: 0 15px;
+            margin: 0 !important;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .acciones form {
+            margin: 0 !important;
+        }
     </style>
 </head>
 
@@ -91,19 +122,36 @@
             <span th:text="${usuario.activo ? 'Activo' : 'Inactivo'}"></span>
         </div>
 
-        <!-- Solo los administradores pueden volver a la lista -->
-        <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-        th:href="@{/usuarios}"
-        class="boton">
-            Volver a usuarios
-        </a>
+                <!-- Botones de acciones -->
+        <div class="acciones">
 
-        <!-- Los usuarios normales pueden regresar a su perfil -->
-        <a th:if="${#authorization.expression('hasRole(''USER'')')}"
-        th:href="@{/usuarios/mi-perfil}"
-        class="boton">
-            Mi perfil
-        </a>
+            <!-- Editar el perfil propio -->
+            <a th:if="${#authentication.name == usuario.username}"
+               th:href="@{/usuarios/mi-perfil/editar}"
+               class="boton"
+               style="background-color: #2563eb;">
+                Editar mi perfil
+            </a>
+
+            <!-- Solo los administradores pueden volver al listado -->
+            <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+               th:href="@{/usuarios}"
+               class="boton">
+                Volver a usuarios
+            </a>
+
+            <!-- Cerrar sesión -->
+            <form th:action="@{/logout}" method="post">
+
+                <button type="submit"
+                        class="boton"
+                        style="background-color: #dc3545;">
+                    Cerrar sesión
+                </button>
+
+            </form>
+
+        </div>
 
     </div>
 

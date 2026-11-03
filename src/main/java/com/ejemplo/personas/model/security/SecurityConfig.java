@@ -1,44 +1,56 @@
+
 package com.ejemplo.personas.model.security;
 
-import java.util.concurrent.ExecutionException;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import org.springframework.beans.factory.annotation.Value;
-
-
-@Configuration 
+@Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
-    
+
     @Value("${app.security.enabled:true}")
-    private boolean securityEnabled; 
+    private boolean securityEnabled;
 
+
+    // Seguridad principal del gimnasio
     @Bean
-    public SecurityFilterChain filterChain (HttpSecurity http) throws ExecutionException{
+    public SecurityFilterChain filterChain(HttpSecurity http)
+            throws Exception {
 
-        if (!securityEnabled){
+        if (!securityEnabled) {
             http
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .authorizeHttpRequests(auth -> auth
+                    .anyRequest().permitAll()
+                )
                 .csrf(csrf -> csrf.disable())
                 .headers(h -> h.frameOptions(f -> f.sameOrigin()));
+
             return http.build();
         }
 
         http
-            
             .authorizeHttpRequests(auth -> auth
-                // Permitir el acceso al login
-                .requestMatchers("/login").permitAll()
 
-                // Proteger el acceso a la consola H2
-                .requestMatchers("/h2-console/**").hasRole("ADMIN")
+                // Rutas públicas
+                .requestMatchers(
+                    "/login",
+                    "/registro",
+                    "/recuperar-password",
+                    "/restablecer-password"
+                ).permitAll()
 
-                // Solo los administradores pueden gestionar usuarios
+                // Consola H2
+                .requestMatchers("/h2-console/**")
+                .hasRole("ADMIN")
+
+                // Gestión administrativa
                 .requestMatchers(
                     "/usuarios",
                     "/usuarios/nuevo",
@@ -48,31 +60,43 @@ public class SecurityConfig {
                     "/usuarios/eliminar/**"
                 ).hasRole("ADMIN")
 
-                // Las demás rutas requieren iniciar sesión
                 .anyRequest().authenticated()
             )
-            
+
             .formLogin(form -> form
                 .loginPage("/login")
+
                 .successHandler((request, response, authentication) -> {
 
-                    // Comprobar si el usuario tiene rol ADMIN
                     boolean esAdmin = authentication.getAuthorities()
                         .stream()
-                        .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+                        .anyMatch(a ->
+                            a.getAuthority().equals("ROLE_ADMIN")
+                        );
 
                     if (esAdmin) {
-                        // Administrador: mostrar lista de usuarios
                         response.sendRedirect(
-                            request.getContextPath() + "/usuarios");
+                            request.getContextPath() + "/usuarios"
+                        );
                     } else {
-                        // El usuario normal ingresa a su propio perfil
                         response.sendRedirect(
-                            request.getContextPath() + "/usuarios/mi-perfil");
+                            request.getContextPath() + "/usuarios/mi-perfil"
+                        );
                     }
                 })
-                .failureUrl("/login?error")
-                .permitAll()
+
+                .failureHandler((request, response, exception) -> {
+
+                    if (exception instanceof DisabledException) {
+                        response.sendRedirect(
+                            request.getContextPath() + "/login?desactivado"
+                        );
+                    } else {
+                        response.sendRedirect(
+                            request.getContextPath() + "/login?error"
+                        );
+                    }
+                })
             )
 
             .logout(logout -> logout
@@ -80,16 +104,19 @@ public class SecurityConfig {
                 .permitAll()
             )
 
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
-            .headers(h -> h.frameOptions(f -> f.sameOrigin()));
+            .csrf(csrf ->
+                csrf.ignoringRequestMatchers("/h2-console/**")
+            )
+
+            .headers(h ->
+                h.frameOptions(f -> f.sameOrigin())
+            );
 
         return http.build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
 }
- 
