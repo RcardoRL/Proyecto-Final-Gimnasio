@@ -1,9 +1,9 @@
 
 
-package com.ejemplo.personas.repository;
+package com.gimnasio.repository;
 
 // Importamos la entidad Clase.
-import com.ejemplo.personas.model.Clase;
+import com.gimnasio.model.Clase;
 
 // Importaciones de Spring Data JPA.
 import org.springframework.data.jpa.repository.JpaRepository;

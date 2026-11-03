@@ -1,5 +1,5 @@
 
-package com.ejemplo.personas.model.security;
+package com.gimnasio.model.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

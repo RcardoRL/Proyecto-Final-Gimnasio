@@ -1,7 +1,7 @@
 
-package com.ejemplo.personas.repository;
+package com.gimnasio.repository;
 
-import com.ejemplo.personas.model.Reserva;
+import com.gimnasio.model.Reserva;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;

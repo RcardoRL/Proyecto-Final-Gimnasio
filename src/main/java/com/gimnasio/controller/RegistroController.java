@@ -1,12 +1,12 @@
 
-package com.ejemplo.personas.controller;
+package com.gimnasio.controller;
 
-import com.ejemplo.personas.model.Usuario;
+import com.gimnasio.model.Usuario;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.ejemplo.personas.service.UsuarioService;
+import com.gimnasio.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;

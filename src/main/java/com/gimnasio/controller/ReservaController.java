@@ -1,12 +1,12 @@
 
-package com.ejemplo.personas.controller;
+package com.gimnasio.controller;
 
-import com.ejemplo.personas.model.Clase;
-import com.ejemplo.personas.model.Usuario;
-import com.ejemplo.personas.repository.ClaseRepository;
-import com.ejemplo.personas.repository.ReservaRepository;
-import com.ejemplo.personas.repository.UsuarioRepository;
-import com.ejemplo.personas.service.ReservaService;
+import com.gimnasio.model.Clase;
+import com.gimnasio.model.Usuario;
+import com.gimnasio.repository.ClaseRepository;
+import com.gimnasio.repository.ReservaRepository;
+import com.gimnasio.repository.UsuarioRepository;
+import com.gimnasio.service.ReservaService;
 
 import java.security.Principal;
 import java.util.HashMap;

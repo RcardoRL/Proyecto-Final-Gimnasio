@@ -1,7 +1,7 @@
-package com.ejemplo.personas.service;
+package com.gimnasio.service;
 
-import com.ejemplo.personas.model.Usuario;
-import com.ejemplo.personas.repository.UsuarioRepository;
+import com.gimnasio.model.Usuario;
+import com.gimnasio.repository.UsuarioRepository;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

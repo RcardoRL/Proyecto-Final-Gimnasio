@@ -1,8 +1,8 @@
 
-package com.ejemplo.personas.controller;
+package com.gimnasio.controller;
 
-import com.ejemplo.personas.model.Usuario;
-import com.ejemplo.personas.service.UsuarioService;
+import com.gimnasio.model.Usuario;
+import com.gimnasio.service.UsuarioService;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.stereotype.Controller;

@@ -1,7 +1,7 @@
 
-package com.ejemplo.personas.repository;
+package com.gimnasio.repository;
 
-import com.ejemplo.personas.model.TokenRecuperacion;
+import com.gimnasio.model.TokenRecuperacion;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,11 +1,11 @@
 
-package com.ejemplo.personas.service;
+package com.gimnasio.service;
 
 // Importamos las entidades y repositorios necesarios.
-import com.ejemplo.personas.model.Clase;
-import com.ejemplo.personas.model.Usuario;
-import com.ejemplo.personas.repository.ClaseRepository;
-import com.ejemplo.personas.repository.UsuarioRepository;
+import com.gimnasio.model.Clase;
+import com.gimnasio.model.Usuario;
+import com.gimnasio.repository.ClaseRepository;
+import com.gimnasio.repository.UsuarioRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

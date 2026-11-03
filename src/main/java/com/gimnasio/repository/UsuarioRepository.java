@@ -1,6 +1,6 @@
-package com.ejemplo.personas.repository;
+package com.gimnasio.repository;
 
-import com.ejemplo.personas.model.Usuario;
+import com.gimnasio.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.List;

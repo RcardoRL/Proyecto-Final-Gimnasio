@@ -1,5 +1,5 @@
 
-package com.ejemplo.personas.model;
+package com.gimnasio.model;
 
 // Importaciones necesarias para trabajar con JPA y las validaciones.
 import jakarta.persistence.*;

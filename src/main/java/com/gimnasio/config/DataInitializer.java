@@ -1,8 +1,8 @@
 
-package com.ejemplo.personas.config;
+package com.gimnasio.config;
 
-import com.ejemplo.personas.model.Usuario;
-import com.ejemplo.personas.repository.UsuarioRepository;
+import com.gimnasio.model.Usuario;
+import com.gimnasio.repository.UsuarioRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

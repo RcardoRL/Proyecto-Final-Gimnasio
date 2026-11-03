@@ -1,12 +1,12 @@
 
-package com.ejemplo.personas.service;
+package com.gimnasio.service;
 
-import com.ejemplo.personas.model.Clase;
-import com.ejemplo.personas.model.Reserva;
-import com.ejemplo.personas.model.Usuario;
-import com.ejemplo.personas.repository.ClaseRepository;
-import com.ejemplo.personas.repository.ReservaRepository;
-import com.ejemplo.personas.repository.UsuarioRepository;
+import com.gimnasio.model.Clase;
+import com.gimnasio.model.Reserva;
+import com.gimnasio.model.Usuario;
+import com.gimnasio.repository.ClaseRepository;
+import com.gimnasio.repository.ReservaRepository;
+import com.gimnasio.repository.UsuarioRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

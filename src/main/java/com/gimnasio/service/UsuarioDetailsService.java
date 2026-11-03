@@ -1,7 +1,7 @@
-package com.ejemplo.personas.service;
+package com.gimnasio.service;
 
-import com.ejemplo.personas.model.Usuario;
-import com.ejemplo.personas.repository.UsuarioRepository;
+import com.gimnasio.model.Usuario;
+import com.gimnasio.repository.UsuarioRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

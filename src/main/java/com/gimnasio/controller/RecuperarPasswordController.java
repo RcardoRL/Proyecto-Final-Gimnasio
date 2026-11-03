@@ -1,7 +1,7 @@
 
-package com.ejemplo.personas.controller;
+package com.gimnasio.controller;
 
-import com.ejemplo.personas.service.RecuperacionPasswordService;
+import com.gimnasio.service.RecuperacionPasswordService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

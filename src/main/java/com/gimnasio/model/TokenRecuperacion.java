@@ -1,5 +1,5 @@
 
-package com.ejemplo.personas.model;
+package com.gimnasio.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

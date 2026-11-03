@@ -1,10 +1,10 @@
 
-package com.ejemplo.personas.service;
+package com.gimnasio.service;
 
-import com.ejemplo.personas.model.Usuario;
-import com.ejemplo.personas.model.TokenRecuperacion;
-import com.ejemplo.personas.repository.UsuarioRepository;
-import com.ejemplo.personas.repository.TokenRecuperacionRepository;
+import com.gimnasio.model.Usuario;
+import com.gimnasio.model.TokenRecuperacion;
+import com.gimnasio.repository.UsuarioRepository;
+import com.gimnasio.repository.TokenRecuperacionRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

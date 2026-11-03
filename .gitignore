@@ -47,5 +47,8 @@ build/
 application-local.properties
 application-local.yml
 
-# Base de datos H2 local
+# Base de datos H2
 /data/
+
+# Respaldo temporal del paquete anterior
+/personas_respaldo_temporal/
