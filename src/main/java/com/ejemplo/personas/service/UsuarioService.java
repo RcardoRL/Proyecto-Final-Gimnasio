@@ -96,6 +96,23 @@ public class UsuarioService {
         return crear(usuario);
     }
 
+        // REGISTRO DE ENTRENADORES
+    @Transactional
+    public Usuario registrarEntrenador(Usuario usuario) {
+
+        // Asignar obligatoriamente el rol ENTRENADOR
+        usuario.setRol("ENTRENADOR");
+
+        // Activar la cuenta automáticamente
+        usuario.setActivo(true);
+
+        // Evitar que se reutilice un ID
+        usuario.setId(null);
+
+        // Reutilizar las validaciones y el cifrado de contraseña
+        return crear(usuario);
+    }
+
 
     //ACTUALIZAR USUARIOS 
     @Transactional 

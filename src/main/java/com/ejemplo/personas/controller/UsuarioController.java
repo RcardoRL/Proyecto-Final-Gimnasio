@@ -54,33 +54,34 @@ public String mostrarFormulario(Model model) {
     return "usuarios/formulario";
 }
 
+// Acá se crea el Entrenador //
 
+@PreAuthorize("hasRole('ADMIN')")
 @PostMapping("/usuarios/guardar")
-public String guardar( //metodo para crear usuarios
+public String guardar(
         @Valid @ModelAttribute("usuario") Usuario usuario,
         BindingResult result,
         Model model) {
 
-    // Verificar errores de validación
     if (result.hasErrors()) {
         return "usuarios/formulario";
     }
 
     try {
-        // Guardar mediante el servicio
-        usuarioService.crear(usuario);
+        // Registrar al nuevo usuario como ENTRENADOR
+        usuarioService.registrarEntrenador(usuario);
 
-        // Regresar a la lista
+        // Regresar a Gestión de Usuarios
         return "redirect:/usuarios";
 
     } catch (IllegalArgumentException e) {
 
-        // Mostrar errores
         model.addAttribute("error", e.getMessage());
 
         return "usuarios/formulario";
     }
 }
+
 
 
 @GetMapping("/usuarios/editar/{id}")

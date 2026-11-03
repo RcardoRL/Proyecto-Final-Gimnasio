@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Clases</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 30px;
+        }
+
+        .contenedor {
+            background-color: white;
+            max-width: 600px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #263445;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            box-sizing: border-box;
+        }
+
+        .boton {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #2471a3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+        }
+
+        .mensaje-error {
+            color: red;
+            margin-top: 15px;
+        }
+
+        .nota {
+            color: #555;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <!-- El título cambia dependiendo de si se registra o edita una clase. -->
+    <h1 th:text="${clase.id == null} ? 'Registrar nueva clase' : 'Editar clase'">
+        Formulario de clases
+    </h1>
+
+    <!--
+        El formulario utiliza una dirección diferente:
+        - Si es una clase nueva, guarda los datos.
+        - Si ya existe, actualiza sus datos.
+    -->
+    <form method="post"
+          th:action="${clase.id == null} ? @{/clases/guardar} : @{/clases/actualizar/{id}(id=${clase.id})}"
+          th:object="${clase}">
+
+        <!-- Campo para ingresar el nombre de la clase. -->
+        <label for="nombre">Nombre de la clase:</label>
+        <input type="text" id="nombre" th:field="*{nombre}"
+               placeholder="Ejemplo: Yoga" required>
+
+        <p class="error" th:if="${#fields.hasErrors('nombre')}"
+           th:errors="*{nombre}"></p>
+
+        <!-- Campo para seleccionar el tipo de actividad. -->
+        <label for="tipo">Tipo de actividad:</label>
+        <select id="tipo" th:field="*{tipo}" required>
+            <option value="">Seleccione una actividad</option>
+            <option value="Yoga">Yoga</option>
+            <option value="Spinning">Spinning</option>
+            <option value="Pilates">Pilates</option>
+            <option value="Zumba">Zumba</option>
+            <option value="Musculación">Musculación</option>
+            <option value="Funcional">Entrenamiento funcional</option>
+        </select>
+
+        <p class="error" th:if="${#fields.hasErrors('tipo')}"
+           th:errors="*{tipo}"></p>
+
+        <!--
+            Se muestran únicamente los usuarios que tienen
+            el rol ENTRENADOR.
+        -->
+        <label for="entrenador">Entrenador:</label>
+        <select id="entrenador" th:field="*{entrenador.id}" required>
+            <option value="">Seleccione un entrenador</option>
+
+            <option th:each="entrenador : ${entrenadores}"
+                    th:value="${entrenador.id}"
+                    th:text="${entrenador.nombre}">
+            </option>
+        </select>
+
+        <!-- Campo para seleccionar la fecha de la clase. -->
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" th:field="*{fecha}" required>
+
+        <p class="error" th:if="${#fields.hasErrors('fecha')}"
+           th:errors="*{fecha}"></p>
+
+        <!-- Campo para seleccionar la hora de inicio. -->
+        <label for="horaInicio">Hora de inicio:</label>
+        <input type="time" id="horaInicio" th:field="*{horaInicio}" required>
+
+        <p class="error" th:if="${#fields.hasErrors('horaInicio')}"
+           th:errors="*{horaInicio}"></p>
+
+        <!--
+            La duración es fija de una hora.
+            La hora de finalización se calcula automáticamente
+            y no puede modificarse desde el formulario.
+        -->
+        <p class="nota">
+            La duración de cada clase es de una hora.
+            La hora de finalización se calculará automáticamente.
+        </p>
+
+        <!-- Campo para establecer la capacidad máxima. -->
+        <label for="capacidadMaxima">Capacidad máxima:</label>
+        <input type="number" id="capacidadMaxima"
+               th:field="*{capacidadMaxima}"
+               min="1" required>
+
+        <p class="error" th:if="${#fields.hasErrors('capacidadMaxima')}"
+           th:errors="*{capacidadMaxima}"></p>
+
+        <!-- Muestra errores generales del servicio, por ejemplo horarios superpuestos. -->
+        <p class="mensaje-error" th:if="${error}" th:text="${error}"></p>
+
+        <!-- Botón para enviar el formulario. -->
+        <button type="submit" class="boton">Guardar clase</button>
+
+        <!-- Regresa a la lista de clases sin guardar. -->
+        <a th:href="@{/clases}" class="boton">Cancelar</a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

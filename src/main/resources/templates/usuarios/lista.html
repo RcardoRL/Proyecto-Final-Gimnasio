@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,8 @@
             background: white;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             border: 1px solid #ddd;
             text-align: left;
@@ -56,7 +57,7 @@
             text-decoration: none;
         }
 
-        
+
         /* Estilo del botón Eliminar */
         .btn-eliminar {
             background-color: #dc3545;
@@ -91,7 +92,8 @@
             font-size: 14px;
         }
 
-        .buscador button, .btn-limpiar {
+        .buscador button,
+        .btn-limpiar {
             padding: 11px 18px;
             background-color: #2980b9;
             color: white;
@@ -161,6 +163,39 @@
             background-color: #475569;
         }
 
+        .btn-clases {
+            display: inline-block;
+            background-color: #2980b9;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .btn-clases:hover {
+            background-color: #1f618d;
+        }
+
+        /* Botón Cerrar sesión */
+        .btn-cerrar-sesion {
+            display: inline-block;
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-cerrar-sesion:hover {
+            background-color: #b02a37;
+        }
     </style>
 </head>
 
@@ -170,18 +205,34 @@
     <h1>Gestión de Usuarios</h1>
 
     <a th:href="@{/login}" class="btn-volver">
-    Volver al inicio
+        Volver al inicio
     </a>
 
+    <a th:href="@{/clases}" class="btn-clases">
+        Gestión de Clases
+    </a>
+
+    <a th:href="@{/usuarios/nuevo}" class="btn-clases">
+        + Registrar entrenador
+    </a>
+
+    <form th:action="@{/logout}" method="post"
+          style="display:inline-block; margin:0 0 20px 10px; vertical-align:top;">
+
+        <button type="submit" class="btn-cerrar-sesion">
+            Cerrar sesión
+        </button>
+
+    </form>
+    </form>
+
     <!-- Mensaje de éxito -->
-    <div th:if="${mensaje}"
-         style="color: green; margin: 15px 0;">
+    <div th:if="${mensaje}" style="color: green; margin: 15px 0;">
         <p th:text="${mensaje}"></p>
     </div>
 
     <!-- Mensaje de error -->
-    <div th:if="${error}"
-         style="color: red; margin: 15px 0;">
+    <div th:if="${error}" style="color: red; margin: 15px 0;">
         <p th:text="${error}"></p>
     </div>
 
@@ -189,20 +240,17 @@
     <form th:action="@{/usuarios}" method="get" class="buscador">
 
 
-            <input type="text"
-                name="q"
-                th:value="${q}"
-                placeholder="Buscar por nombre o usuario">
+        <input type="text" name="q" th:value="${q}" placeholder="Buscar por nombre o usuario">
 
-            <button type="submit">
-                Buscar
-            </button>
+        <button type="submit">
+            Buscar
+        </button>
 
-            <a th:href="@{/usuarios}" class="btn-limpiar">
-                Limpiar
-            </a>
+        <a th:href="@{/usuarios}" class="btn-limpiar">
+            Limpiar
+        </a>
 
-        </form>
+    </form>
 
 
     <table>
@@ -231,23 +279,19 @@
                 <td th:text="${usuario.rol}"></td>
 
                 <td>
-                    <span th:if="${usuario.activo}"
-                          class="activo">Activo</span>
+                    <span th:if="${usuario.activo}" class="activo">Activo</span>
 
-                    <span th:unless="${usuario.activo}"
-                          class="inactivo">Inactivo</span>
+                    <span th:unless="${usuario.activo}" class="inactivo">Inactivo</span>
                 </td>
 
                 <td>
 
                     <!-- Enlace para consultar los detalles del usuario -->
-                    <a th:href="@{/usuarios/{id}(id=${usuario.id})}"
-                    class="btn-detalle">
+                    <a th:href="@{/usuarios/{id}(id=${usuario.id})}" class="btn-detalle">
                         Ver detalles
                     </a>
 
-                    <a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}"
-                        class="btn-editar">
+                    <a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}" class="btn-editar">
                         Editar
                     </a>
 
@@ -262,4 +306,5 @@
     </table>
 
 </body>
+
 </html>

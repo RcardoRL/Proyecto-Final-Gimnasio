@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Clases</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f4f6f9;
+        }
+
+        h1 {
+            color: #263445;
+        }
+
+        .contenedor {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #263445;
+            color: white;
+        }
+
+        .boton {
+            display: inline-block;
+            padding: 9px 13px;
+            background-color: #2471a3;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Botón para crear una nueva clase */
+        .btn-nueva-clase {
+            display: inline-block;
+            padding: 11px 18px;
+            background-color: #198754;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .btn-nueva-clase:hover {
+            background-color: #146c43;
+        }
+
+        .eliminar {
+            background-color: #c0392b;
+        }
+
+        .mensaje {
+            color: green;
+            margin: 10px 0;
+        }
+
+        .error {
+            color: red;
+            margin: 10px 0;
+        }
+
+        .acciones {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+                /* Botón para regresar a Gestión de Usuarios */
+        .btn-usuarios {
+            display: inline-block;
+            padding: 11px 18px;
+            background-color: #64748b;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-usuarios:hover {
+            background-color: #475569;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <h1>Gestión de Clases del Gimnasio</h1>
+
+    <!-- Botón para abrir el formulario de creación de clases. -->
+    <a th:href="@{/clases/nueva}" class="btn-nueva-clase">
+        + Crear nueva clase
+    </a>
+
+    <a th:href="@{/usuarios}" class="btn-usuarios">
+        ← Gestión de Usuarios
+    </a>    
+
+    <!-- Mensaje cuando una operación se realiza correctamente. -->
+    <p class="mensaje" th:if="${mensaje}" th:text="${mensaje}"></p>
+
+    <!-- Mensaje cuando ocurre algún problema. -->
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <!-- Tabla que muestra las clases registradas. -->
+    <table>
+
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Entrenador</th>
+            <th>Fecha</th>
+            <th>Hora de inicio</th>
+            <th>Hora de finalización</th>
+            <th>Capacidad máxima</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <!-- Recorremos la lista de clases enviada por el controlador. -->
+        <tr th:each="clase : ${clases}">
+
+            <td th:text="${clase.nombre}"></td>
+
+            <td th:text="${clase.tipo}"></td>
+
+            <td th:text="${clase.entrenador.nombre}"></td>
+
+            <td th:text="${clase.fecha}"></td>
+
+            <td th:text="${clase.horaInicio}"></td>
+
+            <!-- La hora final se calcula automáticamente en Clase.java. -->
+            <td th:text="${clase.horaFin}"></td>
+
+            <td th:text="${clase.capacidadMaxima}"></td>
+
+            <td>
+                <div class="acciones">
+
+                    <!-- Permite modificar los datos de la clase. -->
+                    <a th:href="@{/clases/editar/{id}(id=${clase.id})}"
+                       class="boton">
+                        Editar
+                    </a>
+
+                    <!-- Envía una solicitud POST para eliminar la clase. -->
+                    <form th:action="@{/clases/eliminar/{id}(id=${clase.id})}"
+                          method="post">
+
+                        <button type="submit"
+                                class="boton eliminar"
+                                onclick="return confirm('¿Desea eliminar esta clase?')">
+                            Eliminar
+                        </button>
+
+                    </form>
+
+                </div>
+            </td>
+
+        </tr>
+
+        <!-- Mensaje cuando todavía no hay clases registradas. -->
+        <tr th:if="${#lists.isEmpty(clases)}">
+            <td colspan="8">Todavía no hay clases registradas.</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

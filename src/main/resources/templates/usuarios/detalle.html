@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,12 +14,12 @@
         }
 
         .contenedor {
-            max-width: 550px;
+            max-width: 850px;
             margin: auto;
             background: white;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
@@ -48,12 +48,14 @@
             background-color: #1f618d;
         }
 
-                /* Alinear los botones de acciones */
+        /* Alinear los botones de acciones */
         .acciones {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
             gap: 12px;
             margin-top: 25px;
+            justify-content: flex-start;
         }
 
         .acciones .boton,
@@ -73,6 +75,8 @@
             color: white;
             text-decoration: none;
             cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .acciones form {
@@ -122,30 +126,42 @@
             <span th:text="${usuario.activo ? 'Activo' : 'Inactivo'}"></span>
         </div>
 
-                <!-- Botones de acciones -->
+        <!-- Botones de acciones -->
         <div class="acciones">
 
             <!-- Editar el perfil propio -->
-            <a th:if="${#authentication.name == usuario.username}"
-               th:href="@{/usuarios/mi-perfil/editar}"
-               class="boton"
-               style="background-color: #2563eb;">
+            <a th:if="${#authentication.name == usuario.username}" th:href="@{/usuarios/mi-perfil/editar}" class="boton"
+                style="background-color: #2563eb;">
                 Editar mi perfil
             </a>
 
+            <a th:if="${usuario.rol == 'ENTRENADOR' and #authentication.name == usuario.username}"
+                th:href="@{/reservas/clases}" class="boton" style="background-color:#198754;">
+                Ver clases
+            </a>
+
+            <!-- Reservar clases: solo en el perfil propio del cliente -->
+            <a th:if="${usuario.rol == 'CLIENTE' and #authentication.name == usuario.username}"
+                th:href="@{/reservas/clases}" class="boton" style="background-color: #198754;">
+                Reservar clases
+            </a>
+
+            <!-- Consultar las reservaciones del cliente -->
+            <a th:if="${usuario.rol == 'CLIENTE' and #authentication.name == usuario.username}"
+                th:href="@{/reservas/mis-reservas}" class="boton" style="background-color: #64748b;">
+                Mis reservaciones
+            </a>
+
+
             <!-- Solo los administradores pueden volver al listado -->
-            <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-               th:href="@{/usuarios}"
-               class="boton">
+            <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/usuarios}" class="boton">
                 Volver a usuarios
             </a>
 
             <!-- Cerrar sesión -->
             <form th:action="@{/logout}" method="post">
 
-                <button type="submit"
-                        class="boton"
-                        style="background-color: #dc3545;">
+                <button type="submit" class="boton" style="background-color: #dc3545;">
                     Cerrar sesión
                 </button>
 
@@ -156,4 +172,5 @@
     </div>
 
 </body>
+
 </html>

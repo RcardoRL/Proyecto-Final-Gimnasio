@@ -70,7 +70,7 @@
 
 <div class="contenedor">
 
-    <h1 th:text="${usuario.id == null} ? 'Nuevo usuario' : 'Editar usuario'">
+    <h1 th:text="${usuario.id == null} ? 'Registrar entrenador' : 'Editar usuario'">
     Formulario de Usuario
     </h1>
 
@@ -133,12 +133,23 @@
              th:errors="*{telefono}"></div>
 
         
-        <label>Rol:</label>
-        <select th:field="*{rol}"> <!-- conecta el selector con el campo rol de Usuario.java -->
-            <option value="ADMIN">Administrador</option>
-            <option value="ENTRENADOR">Entrenador</option>
-            <option value="CLIENTE">Cliente</option>
-        </select>
+        
+        <!-- Rol fijo al registrar un entrenador -->
+        <div th:if="${usuario.id == null}">
+            <label>Rol:</label>
+            <input type="text" value="Entrenador" readonly>
+        </div>
+
+        <!-- Selector de roles al editar un usuario -->
+        <div th:if="${usuario.id != null}">
+            <label>Rol:</label>
+            <select th:field="*{rol}">
+                <option value="ADMIN">Administrador</option>
+                <option value="ENTRENADOR">Entrenador</option>
+                <option value="CLIENTE">Cliente</option>
+            </select>
+        </div>
+
 
 
         <div class="checkbox">
@@ -147,7 +158,7 @@
         </div>
 
         <button type="submit"
-            th:text="${usuario.id == null} ? 'Guardar usuario' : 'Actualizar usuario'">
+            th:text="${usuario.id == null} ? 'Registrar entrenador' : 'Actualizar usuario'">
             Guardar usuario
         </button>
 

@@ -56,9 +56,12 @@ public class SecurityConfig {
                     "/usuarios/nuevo",
                     "/usuarios/guardar",
                     "/usuarios/editar/**",
-                    "/usuarios/actualizar/**",
-                    "/usuarios/eliminar/**"
+                    "/usuarios/actualizar/**"
                 ).hasRole("ADMIN")
+
+                // Gestión de clases: administradores y entrenadores
+                .requestMatchers("/clases", "/clases/**")
+                .hasAnyRole("ADMIN", "ENTRENADOR")
 
                 .anyRequest().authenticated()
             )

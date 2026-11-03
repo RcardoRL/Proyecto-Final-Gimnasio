@@ -46,3 +46,6 @@ build/
 ### Archivos locales ###
 application-local.properties
 application-local.yml
+
+# Base de datos H2 local
+/data/

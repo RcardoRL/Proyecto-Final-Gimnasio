@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mis clases</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f4f6f9;
+        }
+
+        .contenedor {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #263445;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #263445;
+            color: white;
+        }
+
+        .boton {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 15px;
+            margin-right: 8px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .azul {
+            background-color: #2471a3;
+        }
+
+        .gris {
+            background-color: #566573;
+        }
+
+        .rojo {
+            background-color: #c0392b;
+        }
+
+        .mensaje {
+            color: #566573;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <h1>Mis clases asignadas</h1>
+
+    <p>
+        Bienvenido, entrenador:
+        <strong th:text="${entrenador.nombre}"></strong>
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre de la clase</th>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Hora de inicio</th>
+                <th>Hora de finalización</th>
+                <th>Capacidad máxima</th>
+                <th>Cupos ocupados</th>
+                <th>Cupos disponibles</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="clase : ${clases}">
+                <td th:text="${clase.nombre}"></td>
+                <td th:text="${clase.tipo}"></td>
+                <td th:text="${clase.fecha}"></td>
+                <td th:text="${clase.horaInicio}"></td>
+                <td th:text="${clase.horaFin}"></td>
+                <td th:text="${clase.capacidadMaxima}"></td>
+
+                <td th:text="${ocupados[clase.id]}"></td>
+
+                <td th:text="${disponibles[clase.id]}"></td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(clases)}">
+                <td colspan="8">
+                    No tienes clases asignadas actualmente.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/usuarios/mi-perfil}" class="boton azul">
+        Volver a mi perfil
+    </a>
+
+    <form th:action="@{/logout}" method="post" style="display:inline;">
+        <button type="submit" class="boton rojo">
+            Cerrar sesión
+        </button>
+    </form>
+
+</div>
+
+</body>
+</html>
